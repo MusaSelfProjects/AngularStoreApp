@@ -23,7 +23,6 @@ export class CardDetailsComponent implements OnInit {
       if (imdbID !== null) {
         this.item = this.dataService.getItemById(imdbID);
       }
-      console.log('Card Details:', this.item);
     });
   }
 

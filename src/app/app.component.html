@@ -1,4 +1,9 @@
 
+<ng-container *ngIf="dataService.isError">
+  <div class="alert alert-danger" role="alert">
+  <app-error-handling></app-error-handling>
+  </div>
+</ng-container>
 <div class="d-flex flex-column gap-3">
   <div class="row">
     <div class="col">

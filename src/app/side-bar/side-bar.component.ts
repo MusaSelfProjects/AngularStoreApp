@@ -15,18 +15,15 @@ export class SideBarComponent implements OnInit {
       if (groupedData) {
         this.groupedDataByType = groupedData;
         this.typeKeyes = Object.keys(groupedData);
-        console.log(' side bar Grouped Data:', groupedData, 'Type Keys:', this.typeKeyes);
       }
     });
 
 }
 sortDatalist(sortBy:string){
-  console.log('sort type by ',sortBy)
   this.dataService.updateDataList(this.groupedDataByType[sortBy]);
   this.dataService.setSelectedType(sortBy)
 }
 toggleView(){
   this.dataService.toggleView()
-  console.log('side-bar toggle view');
 }
 }

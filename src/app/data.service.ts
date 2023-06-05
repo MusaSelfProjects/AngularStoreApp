@@ -2,16 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; // Import the map operator
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject,throwError } from 'rxjs';
 import { ViewMode} from './types';
+import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  // dataList array of object  games/movie/series
   private dataList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   private groupedDataByTypes: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public  selectedType = "All" ;
   private isAscending = true;
+  /** 
+   * ToDo
+   * The bellow should be private and should use a get set methodes
+  */
+  public  selectedType = "All" ;
+  public isError = false;
+  public errorMsg = '';
   public viewMode: ViewMode = ViewMode.Grid;
 
   constructor(private http: HttpClient) { 
@@ -21,13 +29,17 @@ export class DataService {
     this.getDataFromService().subscribe((dataList) => {
       this.dataList.next(dataList); 
       this.groupedDataByTypes.next(this.arangeDataByTypes(dataList));
-      console.log('service',this.groupedDataByTypes)
       });
   }
   getDataFromService(): Observable<any> {
     const url = 'assets/angular_Response.json'; // Update the URL to the correct path
     return this.http.get<any>(url).pipe(
-      map(response => response.results)
+      map(response => response.results),
+      catchError(error => {
+        this.isError  = true;
+        this.errorMsg = error.message;
+        return throwError('An error occurred. Please try again later.');
+      })
     );
   }
   getDataList(): Observable<any[]> {
@@ -55,14 +67,13 @@ export class DataService {
   updateDataList(data: any[]) {
     this.dataList.next(data); // Update the dataListSubject
   }
-
   setSelectedType(type:string){
     this.selectedType = type;
-    console.log('this.selected',this.selectedType)
   }
   searchDataListByText(text:string){
     const regex = new RegExp(text, 'i'); // 'i' flag for case-insensitive search
     let fillteredList =[];
+    // copyDataList should always be taken from getGroupedDataByTypes[selectedType] to handle in case we delete some letter
     let copyDataList = [...this.dataList.getValue()]
      if (copyDataList){
       fillteredList = copyDataList.filter(item =>
@@ -70,8 +81,7 @@ export class DataService {
       );
     }
     this.updateDataList(fillteredList)
-  console.log('fillteredList',fillteredList)
-  }
+   }
 
   clearSearch(){
     let filtredList :any = [];
@@ -80,13 +90,10 @@ export class DataService {
           filtredList = groupedData[this.selectedType];
       }
       this.updateDataList(filtredList)
-      console.log('clear ',filtredList,'this.selectedType',this.selectedType,'groupedData',groupedData)
-    });
+     });
   }
   refreshData(){
-    console.log( ' dataService refreshDataclicked');
     this.initDataList();
-
   }
   getItemById(imdbID: string): any {
     return this.dataList.getValue().find(item => item.imdbID === imdbID);
@@ -105,6 +112,5 @@ export class DataService {
     } else {
     this.dataList.getValue().sort((a, b) => b.Title.localeCompare(a.Title));
     }
-    console.log('asc',this.isAscending)
-    }
+   }
 }
