@@ -1,0 +1,14 @@
+<div
+  *ngIf="dataService.viewMode === 'grid'; else list"
+  class="row row-cols-1 row-cols-md-2 row-cols-lg-3"
+>
+<div *ngFor="let item of dataList" class="grid-item" (click)="openCardDetails(item)">
+    <app-card [data]="item"></app-card>
+  </div>
+</div>
+
+ <ng-template #list>
+    <div *ngFor="let item of dataList" class="grid-item" (click)="openCardDetails(item)">
+        <app-card [data]="item"></app-card>
+      </div>
+</ng-template>

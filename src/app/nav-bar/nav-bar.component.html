@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand text-capitalize" href="#">
+      One stop Shop ({{ dataService.selectedType }})
+    </a>
+
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search"
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchInputChange($event)"
+    >
+    <ul class="navbar-nav btn-nav-bar">
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary  mr-2" (click)="onHandleSort()">
+            Sort
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary  mr-2" (click)="onHandleRefresh()">
+            Refresh
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary  mr-2" (click)="onHandleClear()">
+            Clear
+          </button>
+        </li>
+      </ul>
+  </div>
+</nav>

@@ -1,0 +1,27 @@
+<div
+  class="card mb-3"
+  [ngStyle]="dataService.viewMode === 'grid' ? null : { 'max-width': '540px' }"
+>
+  <div class="row g-0">
+    <div class="col-md-5">
+      <div class="image-container">
+        <img
+          [src]="data.Poster"
+          class="img-fluid rounded-start"
+          (error)="handleImageError($event)"
+        />
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="card-body">
+        <h5 class="card-title">{{ data.Title }}</h5>
+        <p class="card-text">
+          <small class="text-body-secondary">{{ data.Year | formatDate }}</small>
+        </p>
+        <p class="card-text">
+          <span class="text-capitalize"><b>type:</b></span> {{ data.Type }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

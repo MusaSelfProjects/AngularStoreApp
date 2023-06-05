@@ -1,0 +1,20 @@
+<div class="container" *ngIf="item">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="image-container">
+              <img *ngIf="item.Poster" [src]="item.Poster" class="card-img-top" alt="Poster" target="_blank">
+            </div>
+            <div class="content-container">
+              <h5 class="card-title">{{ item.Title }}</h5>
+              <p class="card-text">Year: {{ item.Year }}</p>
+              <p class="card-text">IMDB ID: {{ item.imdbID }}</p>
+              <p class="card-text">Type: {{ item.Type }}</p>
+            </div>
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
